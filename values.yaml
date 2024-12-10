@@ -1,0 +1,24 @@
+singleNamespace: true
+workflow:
+  serviceAccount:
+    create: false
+  rbac:
+    create: false
+server:
+  serviceType: LoadBalancer
+  authModes: ["sso"]
+  sso:
+    enabled: true
+    clientId:
+      name: argo-sso
+      key: client-id
+    clientSecret:
+      name: argo-sso 
+      key: client-secret
+    issuer: https://oauth.aliyun.com
+    redirectUrl: http://localhost:2746/oauth2/callback
+    scopes: ["aliuid", "profile"] 
+    userInfoPath: /oauth2/v1/userinfo
+    rbac:
+      enabled: false
+

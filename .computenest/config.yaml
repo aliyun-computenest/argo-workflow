@@ -1,0 +1,36 @@
+Service:
+  RegionId: cn-hangzhou
+  DeployType: ros
+  DeployMetadata:
+    ServiceInstanceNameRule:
+      Prefix: argowf-
+    SupplierDeployMetadata:
+      HelmChartArtifactRelation:
+        '{{ computenest::helmchart::argoworkflows }}':
+          ArtifactId: ${Artifact.Artifact_HelmChart_Argoworkflow.ArtifactId}
+          ArtifactVersion: ${Artifact.Artifact_HelmChart_Argoworkflow.ArtifactVersion}
+    TemplateConfigs:
+      - Name: 模版1
+        Url: 'ros_templates/template.yaml'
+        AllowedRegions: []
+  ServiceType: private
+  ServiceInfo:
+    Locale: zh-CN
+    ShortDescription: Argo Workflows是一个开源项目，为Kubernetes提供container-native工作流程，其主要通过Kubernetes CRD实现的。 特点如下： - 工作流的每一步都是一个容器 - 将多步骤工作流建模为一系列任务，或者使用有向无环图（DAG）描述任务之间的依赖关系 - 可以在短时间内轻松运行用于机器学习或数据处理的计算密集型作业 - 在Kubernetes上运行CI/CD Pipeline，无需复杂的软件配置
+    Image: 'resources/icons/service_logo.png'
+    Name: Argo Workflows社区版
+  ShareType: Public
+  ApprovalType: Manual
+Artifact:
+  Artifact_HelmChart_Argoworkflow:
+    ArtifactType: HelmChart
+    ArtifactName: Chart_Argoworkflow
+    Description: Argoworkflows HelmChart部署物
+    ArtifactProperty:
+      RepoName: ${HelmChartBuilder.HelmChart_Argoworkflow.RepoName}
+      Tag: ${HelmChartBuilder.HelmChart_Argoworkflow.Tag}
+HelmChartBuilder:
+  HelmChart_Argoworkflow:
+    HelmChartPath: '../targets/argo-workflows-0.45.1.tgz'
+    RepoName: argo-workflows
+    Tag: 0.45.1

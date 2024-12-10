@@ -1,0 +1,54 @@
+apiVersion: v1
+data:
+  client-id: NDA0MzAwOTczMzMwMTM2NTA4Mw==
+  client-secret: Und6RUQ3cG5ac3l0U2FaM0k0QlVCSktKYjlsbnJQUEVYZzlFaFhMeW9yQnQ0T2xmalY2bHNWdEM1THN2WTV5cw==
+kind: Secret
+metadata:
+  name: argo-sso
+type: Opaque
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: argo-admin-role
+rules:
+  - apiGroups:
+      - argoproj.io
+    resources:
+      - workflows
+      - workflows/finalizers
+      - workfloweventbindings
+      - workfloweventbindings/finalizers
+      - workflowtemplates
+      - workflowtemplates/finalizers
+      - cronworkflows
+      - cronworkflows/finalizers
+      - clusterworkflowtemplates
+      - clusterworkflowtemplates/finalizers
+      - workflowtasksets
+      - workflowtasksets/finalizers
+      - workflowtaskresults
+      - workflowtaskresults/finalizers
+      - workflowartifactgctasks
+      - workflowartifactgctasks/finalizers
+    verbs:
+      - create
+      - delete
+      - deletecollection
+      - get
+      - list
+      - patch
+      - update
+      - watch
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: argo-admin-role-binding
+subjects:
+ - kind: ServiceAccount
+   name: default
+roleRef:
+  kind: ClusterRole
+  name: argo-admin-role
+  apiGroup: rbac.authorization.k8s.io
