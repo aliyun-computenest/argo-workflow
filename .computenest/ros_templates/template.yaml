@@ -35,8 +35,8 @@ Parameters:
       Visible:
         Condition:
           Fn::Equals:
-            - ${CreateAck}
-            - false
+            - ${AckOptions}
+            - ExistingACK
   PayType:
     Type: String
     Label:
