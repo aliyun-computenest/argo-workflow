@@ -155,5 +155,7 @@ https://github.com/aliyun-computenest/argo-workflows/blob/main/targets/argo-work
 ```
 
 ### 更多配置
-
 请参考地址[Github Repo](https://github.com/argoproj/argo-helm/tree/main/charts/argo-workflows)
+
+### Argo cli和更多功能
+参考[官网](https://argo-workflows.readthedocs.io/en/latest/walk-through/argo-cli/)
