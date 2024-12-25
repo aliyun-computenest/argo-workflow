@@ -1,0 +1,3 @@
+quay.io/argoproj/argocli:v3.6.2
+quay.io/argoproj/argoexec:v3.6.2
+quay.io/argoproj/workflow-controller:v3.6.2
