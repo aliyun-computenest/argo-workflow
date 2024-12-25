@@ -122,9 +122,7 @@ Parameters:
       en: VPC ID
       zh-cn: 专有网络VPC实例ID
     Description:
-      en: >-
-        Please search the ID starting with (vpc-xxx) from console-Virtual
-        Private Cloud
+      en: Please search the ID starting with (vpc-xxx) from console-Virtual Private Cloud
       zh-cn: 现有虚拟专有网络的实例ID
     Default: ''
     AssociationProperty: 'ALIYUN::ECS::VPC::VPCId'
@@ -308,6 +306,21 @@ Parameters:
       en:  Please enter a valid domain name
       zh-cn: 请输入有效的域名
     AllowedPattern: '^(?!-)[A-Za-z0-9-]{1,63}(?<!-)(\.[A-Za-z]{2,})+$'
+  HelmValues:
+    Type: Json
+    Label:
+      en: helm values
+      zh-cn: helm配置
+    Default:
+      server:
+        serviceType: LoadBalancer
+      workflow:
+        serviceAccount:
+          create: false
+          name: default
+          pullSecrets: []
+        rbac:
+          create: true
 Conditions:
   CreateAck:
     Fn::Equals:
@@ -480,56 +493,6 @@ Resources:
               name: argo-sso
               namespace: ${Namespace}
             type: Opaque
-            ---
-            apiVersion: rbac.authorization.k8s.io/v1
-            kind: ClusterRole
-            metadata:
-              name: argo-admin-role
-              namespace: ${Namespace}
-            rules:
-              - apiGroups:
-                  - argoproj.io
-                resources:
-                  - workflows
-                  - workflows/finalizers
-                  - workfloweventbindings
-                  - workfloweventbindings/finalizers
-                  - workflowtemplates
-                  - workflowtemplates/finalizers
-                  - cronworkflows
-                  - cronworkflows/finalizers
-                  - clusterworkflowtemplates
-                  - clusterworkflowtemplates/finalizers
-                  - workflowtasksets
-                  - workflowtasksets/finalizers
-                  - workflowtaskresults
-                  - workflowtaskresults/finalizers
-                  - workflowartifactgctasks
-                  - workflowartifactgctasks/finalizers
-                verbs:
-                  - create
-                  - delete
-                  - deletecollection
-                  - get
-                  - list
-                  - patch
-                  - update
-                  - watch
-            ---
-            apiVersion: rbac.authorization.k8s.io/v1
-            kind: ClusterRoleBinding
-            metadata:
-              name: argo-admin-role-binding
-              namespace: ${Namespace}
-            subjects:
-             - kind: ServiceAccount
-               name: default
-               namespace: ${Namespace}
-            roleRef:
-              kind: ClusterRole
-              name: argo-admin-role
-              namespace: ${Namespace}
-              apiGroup: rbac.authorization.k8s.io
           - ClientId:
               Fn::Base64Encode:
                 Fn::GetAtt:
@@ -565,35 +528,28 @@ Resources:
       HelmChartUrl: '{{ computenest::helmchart::argoworkflows }}'
       DockerConfigJson: '{{ computenest::helm::dockerconfigjson }}'
       ChartValues:
-        singleNamespace: true
-        workflow:
-          workflowNamespaces:
-            - Ref: ALIYUN::StackName
-          serviceAccount:
-            create: false
-          rbac:
-            create: false
-        server:
-          serviceType: LoadBalancer
-          authModes: ["sso"]
-          sso:
-            enabled: true
-            clientId:
-              name: argo-sso
-              key: client-id
-            clientSecret:
-              name: argo-sso
-              key: client-secret
-            issuer: https://oauth.aliyun.com
-            redirectUrl:
-              Fn::Sub:
-                - http://${DomainAddress}:2746/oauth2/callback
-                - DomainAddress:
-                    Ref: DomainAddress
-            scopes: ["aliuid", "profile"]
-            userInfoPath: /oauth2/v1/userinfo
-            rbac:
-              enabled: false
+        Fn::MergeMap:
+          - Ref: HelmValues
+          - server:
+              authModes: ["sso"]
+              sso:
+                enabled: true
+                clientId:
+                  name: argo-sso
+                  key: client-id
+                clientSecret:
+                  name: argo-sso
+                  key: client-secret
+                issuer: https://oauth.aliyun.com
+                redirectUrl:
+                  Fn::Sub:
+                    - http://${DomainAddress}:2746/oauth2/callback
+                    - DomainAddress:
+                        Ref: DomainAddress
+                scopes: ["aliuid", "profile"]
+                userInfoPath: /oauth2/v1/userinfo
+                rbac:
+                  enabled: false
       Namespace:
         Ref: ALIYUN::StackName
       ReleaseName: release
@@ -637,7 +593,7 @@ Outputs:
         - DomainAddress:
             Ref: DomainAddress
   Description:
-    Label: 请配置到域名解析或hosts中
+    Description: 请配置到域名解析或hosts中
     Value:
       Fn::Sub:
         - ${ServerAddress} ${DomainAddress}

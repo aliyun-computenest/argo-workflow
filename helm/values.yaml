@@ -81,7 +81,7 @@ workflow:
 controller:
   image:
     # -- Registry to use for the controller
-    registry: compute-nest-registry.cn-hangzhou.cr.aliyuncs.com/1853370294850618
+    registry: quay.io
     # -- Registry to use for the controller
     repository: argoproj/workflow-controller
     # -- Image tag for the workflow controller. Defaults to `.Values.images.tag`.
@@ -440,7 +440,7 @@ mainContainer:
 executor:
   image:
     # -- Registry to use for the Workflow Executors
-    registry: compute-nest-registry.cn-hangzhou.cr.aliyuncs.com/1853370294850618
+    registry: quay.io
     # -- Repository to use for the Workflow Executors
     repository: argoproj/argoexec
     # -- Image tag for the workflow executor. Defaults to `.Values.images.tag`.
@@ -466,7 +466,7 @@ server:
   baseHref: /
   image:
     # -- Registry to use for the server
-    registry: compute-nest-registry.cn-hangzhou.cr.aliyuncs.com/1853370294850618
+    registry: quay.io
     # -- Repository to use for the server
     repository: argoproj/argocli
     # -- Image tag for the Argo Workflows server. Defaults to `.Values.images.tag`.
