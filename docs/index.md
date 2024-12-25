@@ -154,8 +154,10 @@ spec:
 https://github.com/aliyun-computenest/argo-workflows/blob/main/targets/argo-workflows-0.45.1.tgz
 ```
 
-### 更多配置
-请参考地址[Github Repo](https://github.com/argoproj/argo-helm/tree/main/charts/argo-workflows)
+### 修改配置
+计算巢支持修改helm配置 进入服务实例->修改配置，输入helm values的配置
+![update-1.png](update-1.png)
+具体helm values的配置请参考地址[Github Repo](https://github.com/argoproj/argo-helm/tree/main/charts/argo-workflows)
 
 ### Argo cli和更多功能
 参考[官网](https://argo-workflows.readthedocs.io/en/latest/walk-through/argo-cli/)
