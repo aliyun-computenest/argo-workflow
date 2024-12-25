@@ -515,7 +515,7 @@ Resources:
       DefaultNamespace:
         Ref: ALIYUN::StackName
   ComputenestHelmApplication:
-    Type: MODULE::ACS::ComputeNest::FluxOciHelmDeploy
+    Type: MODULE::SHARE::1563457855438522::FluxOciHelmDeploy
     Version: default
     Properties:
       ClusterId:
