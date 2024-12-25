@@ -593,7 +593,9 @@ Outputs:
         - DomainAddress:
             Ref: DomainAddress
   Description:
-    Description: 请配置到域名解析或hosts中
+    Label:
+      zh-cn: 请配置到域名解析或hosts中
+      en: Please Add Domain Record
     Value:
       Fn::Sub:
         - ${ServerAddress} ${DomainAddress}
@@ -640,6 +642,7 @@ Metadata:
           zh-cn: 基础配置
       - Parameters:
           - DomainAddress
+          - HelmValues
         Label:
           en: Application Configuration
           zh-cn: 应用配置
