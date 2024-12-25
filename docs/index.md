@@ -122,11 +122,11 @@ spec:
       - name: message
         value: hello argo
   entrypoint: argosay
-    podMetadata:
-        annotations: #配置Annotation跑Spot实例
-          k8s.aliyun.com/eci-spot-strategy: SpotAsPriceGo
-        labels: #配置Label将Pod调度到ECI
-          alibabacloud.com/eci: "true"
+  podMetadata:
+    annotations: #配置Annotation跑Spot实例
+      k8s.aliyun.com/eci-spot-strategy: SpotAsPriceGo
+    labels: #配置Label将Pod调度到ECI
+      alibabacloud.com/eci: "true"
   templates:
     - name: argosay
       inputs:
